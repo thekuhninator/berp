@@ -28,6 +28,7 @@ def get_datasets(data_directory):
     datasets = []
 
     for dataset_path in dataset_paths: # iterate through the paths
+        #print(dataset_paths)
         datasets.append( get_dataset(dataset_path) ) # put it in a tuple
 
     return datasets
@@ -44,28 +45,34 @@ def get_dataset(dataset_path):
 '''
 This function takes as input the folder to the data directory (i.e. the directory in which all the folders for the data
 are present.
+Returns: genecounts metdata and dataset name and path as a tuple
 '''
-def get_datasets_path(data_directory):
+def get_datasets_path(data_directories):
     datasets = []
 
     # get all folders in a directory
-    data_folders = [folder[0] for folder in os.walk(data_directory) if os.path.isdir(folder[0])][1:]
+    data_folders = [folder[0] for folder in os.walk(data_directories) if os.path.isdir(folder[0])][1:]
     # go through each folder and get the files
     for data_folder in data_folders:
-        data_folder = os.path.normpath(data_folder) # this might not work if there are spaces...
-        data_files = [f for f in os.listdir(data_folder)] # get the files in the directory
-
-        # get gene counts
-        gene_counts = os.path.join(data_folder, [fileName for fileName in data_files if 'gene_counts' in fileName][0])
-        # get metadata
-        metadata = os.path.join(data_folder, [fileName for fileName in data_files if 'metadata' in fileName][0])
-
-        dataset_name = os.path.basename(os.path.normpath(data_folder)) # get dataest name
-        dataset_path = data_folder # get dataset path
-
-        datasets.append((gene_counts, metadata, dataset_name, dataset_path)) # crate tuple
+        datasets.append(get_dataset_path(data_folder))
 
     return datasets # return datasets
+
+
+def get_dataset_path(data_dir):
+    data_folder = os.path.normpath(data_dir)  # normalize the path
+    data_files = [f for f in os.listdir(data_folder)]  # get the files in the directory
+
+    # get gene counts
+    gene_counts = os.path.join(data_folder, [fileName for fileName in data_files if 'gene_counts' in fileName][0])
+    # get metadata
+    metadata = os.path.join(data_folder, [fileName for fileName in data_files if 'metadata' in fileName][0])
+    # get the dataset name
+    dataset_name = os.path.basename(os.path.normpath(data_folder))
+    # get the dataset path
+    dataset_path = data_folder
+
+    return (gene_counts, metadata, dataset_name, dataset_path) # create and return tuple
 
 
 '''
