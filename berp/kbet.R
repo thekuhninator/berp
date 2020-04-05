@@ -2,13 +2,51 @@
 
 # install k-bet
 
-#install.packages("devtools")
-.libPaths( c(.libPaths(), "C:/Users/Roman/Documents/RLibrariesTemp", "C:/Users/Roman/Documents/R/win-library/3.4"))
+#library(devtools)
 
+if (!requireNamespace("kBET", quietly = TRUE))
+{
+  BiocManager::install('theislab/kBET', dependencies= TRUE)
+  
+}
+list.of.packages <- c("devtools", "remotes", "BiocManager", "bapred", "ggplot2")
 library(devtools)
-#install_github('theislab/kBET')
+options(repos = getOption("repos")["CRAN"])
+BiocManager::install('bapred') 
+
+if(!require('sva'))
+{
+  BiocManager::install('sva')
+}
+if(!require('BiocParallel'))
+{
+  BiocManager::install('BiocParallel')
+}
+if(!require('affyPLM'))
+{
+  BiocManager::install('affyPLM')
+}
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) {
+  print('installing')
+  install.packages(new.packages, repos = "http://cran.us.r-project.org", dependencies= TRUE)
+  #BiocManager::install(new.packages)
+}
+
+library(BiocManager)
+#if(!require(kBET)) {
+if (!requireNamespace("kBET", quietly = TRUE))
+{
+  BiocManager::install('theislab/kBET', dependencies= TRUE)
+  
+}
+    
+  
+#}
 library(kBET)
 library(bapred)
+library(ggplot2)
 
 args = commandArgs(trailingOnly=TRUE)
 
@@ -19,6 +57,8 @@ input_annot  = args[2]
 output_dir = args[3]
 output_name = args[4]
 
+
+# what is this code doing...
 temp = unlist(strsplit(input_annot, "metadata"))[1]
 name = unlist(strsplit( temp ,  "[\\\\]|[^[:print:]]") )
 name = name[length(name)]
@@ -27,13 +67,13 @@ name = name[length(name)]
 # Read in data file
 my_data <- as.data.frame(t(read.csv(input_counts, header = TRUE, row.names = 1, check.names=FALSE)))
 
-
 #Read in annotation file
 annot <- read.csv(input_annot, header = TRUE, row.names = 1, check.names = FALSE)
 batch = annot$batch
+# change this to be factor of interest...
 diagnosis = annot$scid_diagnosis
 
-
+# not quite sure what this is doing...
 new_data = my_data[ ,which(apply(t(my_data), 1, var) != 0)]
 
 print('ouput name right now')
@@ -89,10 +129,6 @@ capitalize <- function(x) {
 # Generate the Plot title
 plotTitle = paste(capitalize(unlist(strsplit(name, "_"))), collapse= " ")
 
-
-
-library(ggplot2)
-setwd("../Results")
 png(file=paste( output_dir,'/', output_name, ".png", sep=""))
 #batch.estimate <- kBET(data, batch, plot=FALSE)
 plot.data <- data.frame(class=rep(c('observed', 'expected'), 
