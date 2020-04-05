@@ -1,5 +1,5 @@
 import pandas as pd
-
+import subprocess
 '''
  .----------------.  .----------------.  .----------------.  .----------------.
 | .--------------. || .--------------. || .--------------. || .--------------. |
@@ -15,45 +15,37 @@ import pandas as pd
 '''
 
 # TODO: Run KBET should work inside python????
-def run_kBET(test_data):
+def kbet(gene_counts_path, metadata_path, output_path, output_name):
 
-    print(test_data[2])
-#    if(test_data)
-    output_dir = 'C:/Users/Roman/Documents/Work/Depression_and_Immunology/Spring_Research/Results/' + test_data[2]
-    try:
-        os.mkdir(output_dir)
-    except:
-        print('it already exists okay')
+    print('Gene Counts Path')
+    print(gene_counts_path)
+    print('Metadata path')
+    print(metadata_path)
 
-        # except FileExistsError:
-        # otherwise we're fine it already exists
-
-
-    #print(x)
     command = 'Rscript'
-    path_to_script = "C:/Users/Roman/Documents/Work/Depression_and_Immunology/Spring_Research/kBET/kBET_script_pipeline.R"
+    path_to_script = "kbet.R"
 
     # print('kbet THIRD ARGUMENT')
     # print(test_data[2])
 
-    args = [test_data[0], test_data[1], output_dir, test_data[2]]
+    args = [gene_counts_path, metadata_path, output_path, 'kbet_test']
 
     # build command
     cmd = [command, path_to_script] + args
-
-    # NEED TO UNCOMMNE THIS
-
-    #x = subprocess.check_output(cmd, universal_newlines=True, shell=True)
-    #print(x)
+    print('he really said')
+    x = subprocess.check_output(cmd, universal_newlines=True, shell=True, stderr=subprocess.STDOUT)
+    print('result of x', x)
 
     # now let's get the mean rejection rate
-    kBetResultsName = output_dir + '/' + test_data[2] + '_kBET_results.csv'
+    #kBetResultsName = output_dir + '/' + test_data[2] + '_kBET_results.csv'
     # first let's get the csv
-    kBet_results = pd.read_csv(kBetResultsName)
-    rejection_rate = kBet_results.ix[0, 2]
-    acceptance_rate = 1 - rejection_rate
+    #kBet_results = pd.read_csv(kBetResultsName)
+    #rejection_rate = kBet_results.ix[0, 2]
+    #acceptance_rate = 1 - rejection_rate
 
-    return acceptance_rate
+    return 1
+
+    #return acceptance_rate
 
 
 def getMetrics(test_data):
