@@ -1,49 +1,7 @@
 #! /usr/bin/Rscript
 
 # install k-bet
-
-#library(devtools)
-
-if (!requireNamespace("kBET", quietly = TRUE))
-{
-  BiocManager::install('theislab/kBET', dependencies= TRUE)
-  
-}
-list.of.packages <- c("devtools", "remotes", "BiocManager", "bapred", "ggplot2")
 library(devtools)
-options(repos = getOption("repos")["CRAN"])
-BiocManager::install('bapred') 
-
-if(!require('sva'))
-{
-  BiocManager::install('sva')
-}
-if(!require('BiocParallel'))
-{
-  BiocManager::install('BiocParallel')
-}
-if(!require('affyPLM'))
-{
-  BiocManager::install('affyPLM')
-}
-
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) {
-  print('installing')
-  install.packages(new.packages, repos = "http://cran.us.r-project.org", dependencies= TRUE)
-  #BiocManager::install(new.packages)
-}
-
-library(BiocManager)
-#if(!require(kBET)) {
-if (!requireNamespace("kBET", quietly = TRUE))
-{
-  BiocManager::install('theislab/kBET', dependencies= TRUE)
-  
-}
-    
-  
-#}
 library(kBET)
 library(bapred)
 library(ggplot2)
@@ -73,7 +31,7 @@ batch = annot$batch
 # change this to be factor of interest...
 diagnosis = annot$scid_diagnosis
 
-# not quite sure what this is doing...
+# not quite sure what this is doing... get rid of zero variance genes
 new_data = my_data[ ,which(apply(t(my_data), 1, var) != 0)]
 
 print('ouput name right now')
