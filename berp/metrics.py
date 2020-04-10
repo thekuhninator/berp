@@ -1,5 +1,6 @@
 import pandas as pd
 import subprocess
+import os
 '''
  .----------------.  .----------------.  .----------------.  .----------------.
 | .--------------. || .--------------. || .--------------. || .--------------. |
@@ -23,7 +24,9 @@ def kbet(gene_counts_path, metadata_path, output_path, output_name):
     print(metadata_path)
 
     command = 'Rscript'
-    path_to_script = "kbet.R"
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+
+    path_to_script = os.path.join(dir_path, "kbet.R")
 
     # print('kbet THIRD ARGUMENT')
     # print(test_data[2])
@@ -33,7 +36,11 @@ def kbet(gene_counts_path, metadata_path, output_path, output_name):
     # build command
     cmd = [command, path_to_script] + args
     print('he really said')
-    x = subprocess.check_output(cmd, universal_newlines=True, shell=True, stderr=subprocess.STDOUT)
+    try:
+        x = subprocess.check_output(cmd, universal_newlines=True, shell=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
+
     print('result of x', x)
 
     # now let's get the mean rejection rate

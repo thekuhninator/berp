@@ -232,7 +232,8 @@ def plot_tsne(gene_counts ,metadata, perplexity, factor, output_dir, plot_name =
     plot_title = ' '.join([x.capitalize() for x in plot_name.split('_')])
 
     plt.title(plot_title + ' - T-SNE Perplexity: ' + str(perplexity))
-    plt.show()
+    #plt.show()
+    plt.savefig('tsne_figure.png')
     #plt.savefig(output_dir + 't-sne_perplex_' + str(perplexity) + '_' + plot_name + '.png')
     plt.clf()
     plt.cla()
@@ -314,6 +315,7 @@ def single_boxplot(dataset):
     #print(boxPlotData)
     print('****** END BOX PLOT DATA*******(')
 
+    '''
     locs, labels = plt.xticks()
     plt.setp(labels, rotation=45)
 
@@ -322,7 +324,7 @@ def single_boxplot(dataset):
     g = sns.factorplot("year", data=planets, aspect=1.5, kind="count", color="b")
     g.set_xticklabels(rotation=30)
     plt.show()
-
+    '''
     ax = sns.boxplot(x="name", y="Gene Counts",
                 hue="Batch", palette=["m", "g", "r", "b"],
                 data=boxPlotData)
@@ -427,7 +429,8 @@ def plot_boxplot(datasets):
 
     output_dir = 'C:/Users/Roman/Documents/Work/Depression_and_Immunology/Spring_Research/Results/'
 
-    #plt.savefig(output_dir + 'comparative_boxplot' + '.png')
+    # TODO: change boxplot name to be good
+    plt.savefig('boxplot.png')
 
     plt.show()
 

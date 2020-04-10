@@ -13,19 +13,22 @@ setup(
     author_email='roman.kuhn1@gmail.com',
     license='MIT',
     py_modules=['berp'],
-    #packages=['berp'],
+    #dependency_links=['https://github.com/theislab/kBET'],
+#packages=['berp'],
     install_requires=[
         'Click==7.0',
         'pandas==0.24.2',
         'scipy==1.3.0',
         'numpy==1.16.3',
         'sklearn==0.0',
-        'matplotlib==3.1.0',
-        'seaborn==0.10.0'
+        'seaborn==0.8.1',
+        'matplotlib==3.0.1',
+        'rpy2'
+        # need to fix this fucking garbage. maybe have them just install it with anaaconda
     ],
     entry_points='''
         [console_scripts]
-        fart=berp_pipeline:cli
+        berp=berp_pipeline:cli
     ''',
     # dependency_links='' # this is where R packages will go?
     zip_safe=False)
