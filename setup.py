@@ -19,7 +19,7 @@ setup(
         'Click==7.0',
         'pandas==0.24.2',
         'scipy==1.3.0',
-        'numpy==1.16.3',
+        'numpy==1.22.0',
         'sklearn==0.0',
         'seaborn==0.8.1',
         'matplotlib==3.0.1',
